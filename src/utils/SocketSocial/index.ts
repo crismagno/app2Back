@@ -1,6 +1,7 @@
 import { Socket } from "socket.io";
 import { Log } from "../../helpers/Log";
 import { IMessage } from "../../models/Message/types";
+import { SocketRooms } from "../SocketRooms";
 
 const redis = require("socket.io-redis");
 const socket = require("socket.io");
@@ -31,7 +32,22 @@ export class SocketSocial {
           "SOCKET_SOCIAL",
           "warn"
         );
+
+        SocketRooms.setUser({
+          username: String(socket.handshake.query.username),
+          room: String(socket.handshake.query.room),
+          socketID: socket.id,
+        });
         this.socketOn(socket);
+
+        // Sockets disconnect
+        socket.on("disconnect", async () => {
+          SocketRooms.removeUser({
+            username: String(socket.handshake.query.username),
+            room: String(socket.handshake.query.room),
+            socketID: socket.id,
+          });
+        });
       });
       Log.show("Socket started...", "SOCKET_SOCIAL", "success");
     } catch (error) {
