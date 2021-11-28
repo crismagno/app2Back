@@ -1,17 +1,15 @@
 import { SocketSocial } from "../utils/SocketSocial";
-import express from "express";
+import express, { Express } from "express";
 import http from "http";
+import { MiddleWares } from "../middlewares/indes";
 
 export class App {
-  private app = express();
+  private app: Express = express();
   private PORT = process.env.PORT;
   private server = http.createServer(this.app);
-  constructor() {}
 
-  start() {
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
-
+  public start(): void {
+    new MiddleWares(this.app).start();
     new SocketSocial(this.server).start();
 
     this.server.listen(this.PORT, () => {
@@ -19,5 +17,4 @@ export class App {
       console.log(`http://localhost:${this.PORT}`);
     });
   }
-
 }
