@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
-import { IMessage } from "../models/Message/types";
+import { Log } from "../../helpers/Log";
+import { IMessage } from "../../models/Message/types";
 
 const redis = require("socket.io-redis");
 const socket = require("socket.io");
@@ -17,20 +18,28 @@ export class SocketSocial {
   }
 
   start() {
-    console.log("Starting socket...");
+    Log.show("Starting socket...", "SOCKET_SOCIAL", "success");
     try {
       this.io.adapter(
         redis({ host: process.env.REDIS_HOST, port: process.env.REDIS_PORT })
+      );
+      Log.show("Starting socket redis...", "SOCKET_SOCIAL", "success");
+
+      this.io.on("connection", (socket: Socket) => {
+        Log.show(
+          `User connected - SOCKET_ID: [ ${socket.id} ]`,
+          "SOCKET_SOCIAL",
+          "warn"
         );
-        console.log("Starting socket redis...");
-        
-        this.io.on("connection", (socket: Socket) => {
-          console.log(`User connected - SOCKET_ID: [ ${socket.id} ]`);
-          this.socketOn(socket);
-        });
-        console.log("Socket started...");
+        this.socketOn(socket);
+      });
+      Log.show("Socket started...", "SOCKET_SOCIAL", "success");
     } catch (error) {
-      console.log("Error socket start", error);
+      Log.show(
+        `Error socket start ${String(error)}`,
+        "SOCKET_SOCIAL",
+        "success"
+      );
     }
   }
 
