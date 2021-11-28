@@ -17,7 +17,7 @@ export class App {
       Log.show(
         `Listening on port ${this.PORT}, http://localhost:${this.PORT}`,
         "APP",
-        "success"
+        "info"
       );
     });
   }

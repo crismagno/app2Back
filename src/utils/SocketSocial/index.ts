@@ -1,9 +1,11 @@
 import { Socket } from "socket.io";
 import { Log } from "../../helpers/Log";
 import { IMessage } from "../../models/Message/types";
+import { SocketRedis } from "../SocketRedis";
 import { SocketRooms } from "../SocketRooms";
+import { UserRoom } from "../UserRoom";
+import { IUserRoom } from "../UserRoom/types";
 
-const redis = require("socket.io-redis");
 const socket = require("socket.io");
 
 export class SocketSocial {
@@ -18,38 +20,22 @@ export class SocketSocial {
     });
   }
 
-  start() {
-    Log.show("Starting socket...", "SOCKET_SOCIAL", "success");
+  public start() {
+    Log.show("Starting socket...", "SOCKET_SOCIAL", "none");
     try {
-      this.io.adapter(
-        redis({ host: process.env.REDIS_HOST, port: process.env.REDIS_PORT })
-      );
-      Log.show("Starting socket redis...", "SOCKET_SOCIAL", "success");
-
+      SocketRedis.start(this.io);
       this.io.on("connection", (socket: Socket) => {
-        Log.show(
-          `User connected - SOCKET_ID: [ ${socket.id} ]`,
-          "SOCKET_SOCIAL",
-          "warn"
+        const user = new UserRoom(
+          String(socket.handshake.query.username),
+          String(socket.handshake.query.room),
+          socket.id,
+          String(socket.handshake.query.avatar || "")
         );
-
-        SocketRooms.setUser({
-          username: String(socket.handshake.query.username),
-          room: String(socket.handshake.query.room),
-          socketID: socket.id,
-        });
+        SocketRooms.setUser(user);
+        this.socketEmit(user);
         this.socketOn(socket);
-
-        // Sockets disconnect
-        socket.on("disconnect", async () => {
-          SocketRooms.removeUser({
-            username: String(socket.handshake.query.username),
-            room: String(socket.handshake.query.room),
-            socketID: socket.id,
-          });
-        });
+        this.socketOnDisconnect(socket, user);
       });
-      Log.show("Socket started...", "SOCKET_SOCIAL", "success");
     } catch (error) {
       Log.show(
         `Error socket start ${String(error)}`,
@@ -58,7 +44,10 @@ export class SocketSocial {
       );
     }
   }
-
+  /**
+   * listen socket on
+   * @param socket - socket connected
+   */
   private socketOn(socket: Socket) {
     socket.on("emitNewMessage", (data: IMessage): void => {
       this.io.emit("onNewMessage", data);
@@ -67,5 +56,25 @@ export class SocketSocial {
     socket.on("emitRemoveMessage", (data: IMessage): void => {
       this.io.emit("onRemoveMessage", data);
     });
+  }
+
+  /**
+   * listen socket disconnect
+   * @param socket - socket connected
+   * @param user - user connected
+   */
+  private socketOnDisconnect(socket: Socket, user: IUserRoom) {
+    socket.on("disconnect", async () => {
+      SocketRooms.removeUser(user);
+      this.io.emit("userDisconnected", user);
+    });
+  }
+
+  /**
+   * events socket emit
+   * @param user - user connected
+   */
+  private socketEmit(user: IUserRoom) {
+    this.io.emit("userConnected", user);
   }
 }

@@ -1,4 +1,5 @@
-import { IRoom, IUserRoom } from "./types";
+import { IUserRoom } from "../UserRoom/types";
+import { IRoom } from "./types";
 
 export class SocketRooms {
   public static users: IUserRoom[] = [];

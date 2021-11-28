@@ -1,8 +1,4 @@
-export interface IUserRoom {
-  username: string;
-  room: IRoom["name"];
-  socketID: string;
-}
+import { IUserRoom } from "../UserRoom/types";
 
 export interface IRoom {
   userKing: IUserRoom;
