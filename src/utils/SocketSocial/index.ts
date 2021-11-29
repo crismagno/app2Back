@@ -77,5 +77,7 @@ export class SocketSocial {
    */
   private socketEmit(user: IUserRoom) {
     this.io.compress(true).emit(`userConnected-${user.room}`, user);
+    const usersRoom: IUserRoom[] = SocketRooms.getUsersRoom(user);
+    this.io.compress(true).emit(`userConnected-${user.userId}`, usersRoom);
   }
 }

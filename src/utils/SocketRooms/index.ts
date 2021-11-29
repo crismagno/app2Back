@@ -78,4 +78,14 @@ export class SocketRooms {
       return this.rooms;
     }
   }
+
+  public static getUsersRoom(user: IUserRoom): IUserRoom[] {
+    const filterRoomUser: IRoom[] = this.rooms.filter(
+      (room: IRoom): boolean => room.name === user.room
+    );
+    if (filterRoomUser.length <= 0) {
+      return [];
+    }
+    return filterRoomUser[0].users;
+  }
 }
