@@ -4,8 +4,15 @@ export enum EModules {
   SOCKET_SOCIAL = "Socket Social",
   LOG = "Log",
   NONE = "None",
+  SERVER = "Server",
 }
-export type TModules = "APP" | "MIDDLEWARES" | "SOCKET_SOCIAL" | "LOG" | "NONE";
+export type TModules =
+  | "APP"
+  | "MIDDLEWARES"
+  | "SOCKET_SOCIAL"
+  | "LOG"
+  | "NONE"
+  | "SERVER";
 
 export enum ELogColors {
   info = "blue",
