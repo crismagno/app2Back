@@ -26,6 +26,7 @@ export class SocketSocial {
       SocketRedis.start(this.io);
       this.io.on("connection", (socket: Socket) => {
         const user = new UserRoom(
+          String(socket.handshake.query.userId),
           String(socket.handshake.query.username),
           String(socket.handshake.query.room),
           socket.id,
@@ -50,11 +51,11 @@ export class SocketSocial {
    */
   private socketOn(socket: Socket) {
     socket.on("emitNewMessage", (data: IMessage): void => {
-      this.io.emit("onNewMessage", data);
+      this.io.compress(true).emit(`onNewMessage-${data.room}`, data);
     });
 
     socket.on("emitRemoveMessage", (data: IMessage): void => {
-      this.io.emit("onRemoveMessage", data);
+      this.io.compress(true).emit(`onRemoveMessage-${data.room}`, data);
     });
   }
 
@@ -66,7 +67,7 @@ export class SocketSocial {
   private socketOnDisconnect(socket: Socket, user: IUserRoom) {
     socket.on("disconnect", async () => {
       SocketRooms.removeUser(user);
-      this.io.emit("userDisconnected", user);
+      this.io.compress(true).emit(`userDisconnected-${user.room}`, user);
     });
   }
 
@@ -75,6 +76,6 @@ export class SocketSocial {
    * @param user - user connected
    */
   private socketEmit(user: IUserRoom) {
-    this.io.emit("userConnected", user);
+    this.io.compress(true).emit(`userConnected-${user.room}`, user);
   }
 }
