@@ -25,13 +25,7 @@ export class SocketSocial {
     try {
       SocketRedis.start(this.io);
       this.io.on("connection", (socket: Socket) => {
-        const user = new UserRoom(
-          String(socket.handshake.query.userId),
-          String(socket.handshake.query.username),
-          String(socket.handshake.query.room),
-          socket.id,
-          String(socket.handshake.query.avatar || "")
-        );
+        const user: IUserRoom = this.socketQueryToUserRoom(socket);
         SocketRooms.setUser(user);
         this.socketEmit(user);
         this.socketOn(socket);
@@ -45,6 +39,23 @@ export class SocketSocial {
       );
     }
   }
+
+  /**
+   * create user by socket handshake query
+   * @param socket
+   * @returns IUserRoom
+   */
+  private socketQueryToUserRoom(socket: Socket): IUserRoom {
+    return new UserRoom(
+      String(socket.handshake.query.userId),
+      String(socket.handshake.query.username),
+      String(socket.handshake.query.room),
+      socket.id,
+      String(socket.handshake.query.avatar || ""),
+      String(socket.handshake.query.userColor || "")
+    );
+  }
+
   /**
    * listen socket on
    * @param socket - socket connected

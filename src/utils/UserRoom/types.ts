@@ -6,4 +6,5 @@ export interface IUserRoom {
   room: IRoom["name"];
   socketID: string;
   avatar?: string;
+  userColor?: string;
 }
