@@ -2,7 +2,6 @@ import { SocketSocial } from "../utils/SocketSocial";
 import express, { Express } from "express";
 import http from "http";
 import { MiddleWares } from "../middlewares";
-import { Log } from "../helpers/Log";
 import { ServerCluster } from "../utils/ServerCluster";
 
 export class App {
