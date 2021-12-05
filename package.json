@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon",
-    "start": "node src/index.ts"
+    "start": "pm2 start"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
     "dotenv": "^10.0.0",
     "eiows": "^3.7.3",
     "express": "^4.17.1",
+    "pm2": "^5.1.2",
     "socket.io": "^4.0.0",
     "socket.io-redis": "^6.1.1"
   },
