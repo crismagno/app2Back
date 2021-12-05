@@ -3,6 +3,7 @@ import express, { Express } from "express";
 import http from "http";
 import { MiddleWares } from "../middlewares";
 import { ServerCluster } from "../utils/ServerCluster";
+import { Routes } from "../routes";
 
 export class App {
   private app: Express = express();
@@ -13,5 +14,6 @@ export class App {
     new MiddleWares(this.app).start();
     new SocketSocial(this.server).start();
     new ServerCluster(this.server, this.port).start();
+    new Routes(this.app).start();
   }
 }
