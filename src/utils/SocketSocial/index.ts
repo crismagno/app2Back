@@ -23,7 +23,7 @@ export class SocketSocial {
   public start() {
     Log.show("Starting socket...", "SOCKET_SOCIAL", "none");
     try {
-      SocketRedis.start(this.io);
+      // SocketRedis.start(this.io);
       this.io.on("connection", (socket: Socket) => {
         const user: IUserRoom = this.socketQueryToUserRoom(socket);
         SocketRooms.setUser(user);
