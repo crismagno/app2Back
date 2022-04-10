@@ -6,6 +6,7 @@ export enum EModules {
   NONE = "None",
   SERVER = "Server",
 }
+
 export type TModules =
   | "APP"
   | "MIDDLEWARES"
