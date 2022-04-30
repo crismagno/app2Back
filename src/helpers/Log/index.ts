@@ -1,28 +1,26 @@
 import colors from "colors";
-import { ELogColors, EModules, TLogColors, TModules } from "./types";
+import { ELogColors, EModules, LogColorsStatus } from "./types";
 
-colors.setTheme({
-  info: "blue",
-  help: "cyan",
-  warn: "yellow",
-  success: "green",
-  error: "red",
-});
+colors.setTheme(ELogColors);
 
 export class Log {
   /**
-   * OBS: message string of variable finalMessage must keep on start line
+   * ALERT: message string of variable finalMessage must keep on start line
    * @param text - Message
    * @param module - What module system
    * @param logColor - type color to log show
    */
-  static show(text: String, module: TModules, logColor?: TLogColors): void {
+  static show(
+    text: String,
+    module: EModules,
+    logColor: LogColorsStatus = LogColorsStatus.NONE
+  ): void {
     const finalMessage = `
--------------------------------------------------------
-Module: ${EModules[module]} 
-Message: ${text}
--------------------------------------------------------
-`;
-    console.log(colors[ELogColors[logColor || "none"]](finalMessage));
+      -------------------------------------------------------
+      Module: ${module}
+      Message: ${text}
+      -------------------------------------------------------
+    `.trim();
+    console.log(colors[ELogColors[logColor]](finalMessage));
   }
 }

@@ -3,6 +3,7 @@ import { cpus } from "os";
 import process from "process";
 import { Log } from "../../helpers/Log";
 import http from "http";
+import { EModules, LogColorsStatus } from "../../helpers/Log/types";
 
 export class ServerCluster {
   private numCPUs: number = cpus().length;
@@ -11,28 +12,25 @@ export class ServerCluster {
 
   public start(): void {
     if (cluster.isPrimary) {
-      Log.show(`Primary ${process.pid} is running`, "SERVER");
+      Log.show(`Primary ${process.pid} is running`, EModules.SERVER);
 
-      // Fork workers.
       for (let i = 0; i < this.numCPUs; i++) {
         cluster.fork();
       }
 
       cluster.on("exit", (worker, code, signal) => {
-        Log.show(`worker ${worker.process.pid} died`, "SERVER");
+        Log.show(`worker ${worker.process.pid} died`, EModules.SERVER);
       });
     } else {
-      // Workers can share any TCP connection
-      // In this case it is an HTTP server
       this.server.listen(this.port, () => {
         Log.show(
           `Listening on port ${this.port}, http://localhost:${this.port}`,
-          "SERVER",
-          "info"
+          EModules.SERVER,
+          LogColorsStatus.INFO
         );
       });
 
-      Log.show(`Worker ${process.pid} started`, "SERVER");
+      Log.show(`Worker ${process.pid} started`, EModules.SERVER);
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
 import { Log } from "../../helpers/Log";
+import { EModules, LogColorsStatus } from "../../helpers/Log/types";
 import { IMessage } from "../../models/Message/types";
 import { SocketRedis } from "../SocketRedis";
 import { SocketRooms } from "../SocketRooms";
@@ -20,8 +21,8 @@ export class SocketSocial {
     });
   }
 
-  public start() {
-    Log.show("Starting socket...", "SOCKET_SOCIAL", "none");
+  public start(): void {
+    Log.show("Starting socket...", EModules.SOCKET_SOCIAL);
     try {
       SocketRedis.start(this.io);
       this.io.on("connection", (socket: Socket) => {
@@ -34,8 +35,8 @@ export class SocketSocial {
     } catch (error) {
       Log.show(
         `Error socket start ${String(error)}`,
-        "SOCKET_SOCIAL",
-        "success"
+        EModules.SOCKET_SOCIAL,
+        LogColorsStatus.SUCCESS
       );
     }
   }
@@ -60,7 +61,7 @@ export class SocketSocial {
    * listen socket on
    * @param socket - socket connected
    */
-  private socketOn(socket: Socket) {
+  private socketOn(socket: Socket): void {
     socket.on("emitNewMessage", (data: IMessage): void => {
       this.io.compress(true).emit(`onNewMessage-${data.room}`, data);
     });
@@ -75,7 +76,7 @@ export class SocketSocial {
    * @param socket - socket connected
    * @param user - user connected
    */
-  private socketOnDisconnect(socket: Socket, user: IUserRoom) {
+  private socketOnDisconnect(socket: Socket, user: IUserRoom): void {
     socket.on("disconnect", async () => {
       SocketRooms.removeUser(user);
       this.io.compress(true).emit(`userDisconnected-${user.room}`, user);
@@ -86,7 +87,7 @@ export class SocketSocial {
    * events socket emit
    * @param user - user connected
    */
-  private socketEmit(user: IUserRoom) {
+  private socketEmit(user: IUserRoom): void {
     this.io.compress(true).emit(`userConnected-${user.room}`, user);
     const usersRoom: IUserRoom[] = SocketRooms.getUsersRoom(user);
     this.io.compress(true).emit(`userConnected-${user.userId}`, usersRoom);

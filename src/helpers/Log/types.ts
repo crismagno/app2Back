@@ -1,19 +1,24 @@
 export enum EModules {
-  APP = "App",
-  MIDDLEWARES = "Middlewares",
-  SOCKET_SOCIAL = "Socket Social",
-  LOG = "Log",
-  NONE = "None",
-  SERVER = "Server",
+  APP = "APP",
+  MIDDLEWARES = "MIDDLEWARES",
+  SOCKET_SOCIAL = "SOCKET_SOCIAL",
+  LOG = "LOG",
+  NONE = "NONE",
+  SERVER = "SERVER",
+  ROUTES = "ROUTES",
+  MAIN = "MAIN",
 }
 
-export type TModules =
-  | "APP"
-  | "MIDDLEWARES"
-  | "SOCKET_SOCIAL"
-  | "LOG"
-  | "NONE"
-  | "SERVER";
+export const ModulesLabels = {
+  APP: "App",
+  MIDDLEWARES: "Middlewares",
+  SOCKET_SOCIAL: "Socket Social",
+  LOG: "Log",
+  NONE: "None",
+  SERVER: "Server",
+  ROUTES: "Routes",
+  MAIN: "Main",
+};
 
 export enum ELogColors {
   info = "blue",
@@ -23,4 +28,10 @@ export enum ELogColors {
   error = "red",
   none = "white",
 }
-export type TLogColors = "success" | "error" | "warn" | "info" | "none";
+export enum LogColorsStatus {
+  SUCCESS = "success",
+  ERROR = "error",
+  WARN = "warn",
+  INFO = "info",
+  NONE = "none",
+}
