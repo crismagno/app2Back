@@ -3,7 +3,7 @@ import { EModules, LogColorsStatus } from "../../helpers/Log/types";
 const redis = require("socket.io-redis");
 
 export class SocketRedis {
-  public static start(io: any) {
+  public static start(io: any): void {
     if (process.env.NODE_ENV === "dev") {
       try {
         io.adapter(
