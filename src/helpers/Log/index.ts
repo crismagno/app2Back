@@ -19,7 +19,7 @@ export class Log {
       -------------------------------------------------------
       Module: ${module}
       Message: ${text}
-      -------------------------------------------------------
+      -------------------------------------------------
     `.trim();
     console.log(colors[ELogColors[logColor]](finalMessage));
   }

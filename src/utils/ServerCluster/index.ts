@@ -26,7 +26,7 @@ export class ServerCluster {
         Log.show(
           `Listening on port ${this.port}, http://localhost:${this.port}`,
           EModules.SERVER,
-          LogColorsStatus.INFO
+          LogColorsStatus.SUCCESS
         );
       });
 
