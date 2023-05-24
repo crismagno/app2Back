@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "SET NODE_ENV=dev & nodemon src/index.ts",
+    "dev:mac": "NODE_ENV=dev & nodemon src/index.ts",
     "build": "npm i && sucrase ./src -d ./dist --transforms typescript,imports",
     "build:tsc": "tsc",
     "build:sucrase": "sucrase ./src -d ./dist --transforms typescript,imports",
@@ -30,7 +31,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "pm2": "^5.1.2",
-    "socket.io": "^4.0.0",
+    "socket.io": "^4.6.1",
     "socket.io-redis": "^6.1.1",
     "ts-node-dev": "^1.1.8"
   },

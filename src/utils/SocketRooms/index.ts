@@ -7,7 +7,9 @@ export class SocketRooms {
 
   public static setUser(user: IUserRoom): IUserRoom[] {
     this.users.push(user);
+    
     this.setUserOnRoom(user);
+    
     return this.users;
   }
 
@@ -15,11 +17,15 @@ export class SocketRooms {
     const indexUser: number = this.users.findIndex(
       (userRoom) => userRoom.socketID === user.socketID
     );
+    
     // this.users.slice(indexUser);
+    
     this.users = this.users.filter(
       (userSR) => userSR.socketID !== user.socketID
     );
+    
     this.removeUserOnRoom(user);
+    
     return this.users;
   }
 
@@ -30,6 +36,7 @@ export class SocketRooms {
         name: user.room,
         users: [user],
       });
+    
       return this.rooms;
     }
 
@@ -39,6 +46,7 @@ export class SocketRooms {
 
     if (indexRoomByUserRoom > -1) {
       this.rooms[indexRoomByUserRoom].users.push(user);
+    
       return this.rooms;
     } else {
       this.rooms.push({
@@ -46,6 +54,7 @@ export class SocketRooms {
         name: user.room,
         users: [user],
       });
+    
       return this.rooms;
     }
   }
@@ -61,12 +70,14 @@ export class SocketRooms {
 
     if (this.rooms.length === 1 && this.rooms[0].users.length === 1) {
       this.rooms = [];
+    
       return this.rooms;
     }
 
     if (indexRoomByUserRoom > -1) {
       if (this.rooms[indexRoomByUserRoom].users.length === 1) {
         this.rooms[indexRoomByUserRoom].users = [];
+    
         return this.rooms;
       }
 
@@ -75,6 +86,7 @@ export class SocketRooms {
       ].users.filter(
         (userRoom: IUserRoom) => userRoom.socketID !== user.socketID
       );
+    
       return this.rooms;
     }
   }
@@ -83,9 +95,11 @@ export class SocketRooms {
     const filterRoomUser: IRoom[] = this.rooms.filter(
       (room: IRoom): boolean => room.name === user.room
     );
+
     if (filterRoomUser.length <= 0) {
       return [];
     }
+    
     return filterRoomUser[0].users;
   }
 }

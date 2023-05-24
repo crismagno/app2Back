@@ -8,16 +8,21 @@ import { Log } from "../helpers/Log";
 import { EModules, LogColorsStatus } from "../helpers/Log/types";
 
 export class App {
-  private app: Express = express();
-  private port: number = Number(process.env.PORT);
-  private server: http.Server = http.createServer(this.app);
+  private _app: Express = express();
+
+  private _port: number = Number(process.env.PORT);
+
+  private _server: http.Server = http.createServer(this._app);
 
   public start(): void {
     try {
-      new MiddleWares(this.app).start();
-      new SocketSocial(this.server).start();
-      new ServerCluster(this.server, this.port).start();
-      new Routes(this.app).start();
+      new MiddleWares(this._app).start();
+
+      new SocketSocial(this._server).start();
+
+      new ServerCluster(this._server, this._port).start();
+
+      new Routes(this._app).start();
     } catch (error) {
       Log.show("Error start App", EModules.APP, LogColorsStatus.ERROR);
     }
