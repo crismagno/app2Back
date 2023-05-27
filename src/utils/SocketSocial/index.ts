@@ -10,21 +10,25 @@ import http from "http";
 
 export class SocketSocial {
   private _io: any;
+  private _socketRedis: SocketRedis;
 
-  constructor(private server: http.Server) {
-    this._io = new Server(this.server, {
+  constructor(private _server: http.Server) {
+    this._io = new Server(this._server, {
       cors: {
         origin: "*",
         methods: ["GET", "POST"],
       },
     });
+
+    this._socketRedis = new SocketRedis(this._io);
   }
 
   public start(): void {
     Log.show("Starting socket...", EModules.SOCKET_SOCIAL);
 
     try {
-      SocketRedis.start(this._io);
+      this._socketRedis.start();
+
       this._io.on("connection", (socket: Socket) => {
         const user: IUserRoom = this._socketQueryToUserRoom(socket);
 

@@ -3,10 +3,11 @@ import { Log } from "../helpers/Log";
 import { EModules, LogColorsStatus } from "../helpers/Log/types";
 import { Main } from "./Main";
 export class Routes {
-  constructor(private app: Express) {}
+  constructor(private _app: Express) {}
+
   public start(): void {
     try {
-      new Main(this.app).start();
+      new Main(this._app).start();
     } catch (error) {
       Log.show(
         "Error at start Routes...",
