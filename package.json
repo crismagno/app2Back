@@ -8,6 +8,7 @@
     "dev:mac": "NODE_ENV=dev & nodemon src/index.ts",
     "build": "npm i && sucrase ./src -d ./dist --transforms typescript,imports",
     "build:tsc": "tsc",
+    "build:tsup": "tsup src",
     "build:sucrase": "sucrase ./src -d ./dist --transforms typescript,imports",
     "start:build": "npm run build && pm2 start dist/index.js",
     "start:normal": "node src/index.ts",
@@ -41,7 +42,8 @@
     "eslint": "^8.6.0",
     "nodemon": "^2.0.15",
     "sucrase": "^3.20.3",
-    "typescript": "^3.3.3"
+    "tsup": "^6.7.0",
+    "typescript": "^4.1.0"
   },
   "engines": {
     "node": "18"
