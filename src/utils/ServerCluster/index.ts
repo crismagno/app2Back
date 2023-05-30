@@ -11,7 +11,7 @@ export class ServerCluster {
   constructor(private _server: http.Server, private _port: number) {}
 
   public start(): void {
-    if (cluster.isPrimary) {
+    if (cluster.isPrimary && false) {
       Log.show(`Primary ${process.pid} is running`, EModules.SERVER);
 
       for (let i = 0; i < this._numCPUs; i++) {
